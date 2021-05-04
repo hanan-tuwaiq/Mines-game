@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bombs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        body {
+            text-align: center;
+            margin-top: 10%;
+            font-family: 'VT323', monospace;
+        }
+
+        #game {
+            width: 420px;
+            height: 310px;
+            margin: 0 auto;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-image: url('empty.png');
+            background-size: contain;
+            float: left;
+        }
+
+        h1 {
+            font-size: 50px;
+        }
+
+        .unsafe {}
+    </style>
+</head>
+
+<body>
+    <h1>Mines Game!</h1>
+    <h3 id="num">Number of mines: </h3>
+    <div id="game">
+    </div>
+
+    <script>
+        let game = document.getElementById('game');
+        let boxes = [];
+        for (let i = 0, t = 0; i < 4; i++, t -= 100) {
+            for (let j = 0, left = 0; j < 3; j++, left -= 100) {
+                let box = document.createElement("div");
+                box.classList.add("box");
+                box.style.position = "relative";
+                box.style.top = t;
+                box.style.left = left;
+                game.appendChild(box);
+                boxes.push(box);
+            }
+        }
+        let bombCounter = 0;
+        for (let i = 0; i < 4; i++) {
+            let random = Math.floor(Math.random() * 12);
+            if (boxes[random].classList.contains("unsafe")) {
+                continue;
+            }
+            boxes[random].classList.add('unsafe');
+            bombCounter++;
+        }
+        document.getElementById("num").innerText = "Number of Mines: " + bombCounter;
+        let counter = boxes.length - bombCounter;
+        for (let i = 0; i < boxes.length; i++) {
+            boxes[i].onclick = (e) => {
+                if (boxes[i].classList.contains("unsafe")) {
+                    boxes[i].style.backgroundImage = "url('dead.png')";
+                    alert("u lost");
+                } else {
+                    boxes[i].style.backgroundImage = "url('win.png')";
+                    counter--;
+                    if (counter == 0) {
+                        alert("U win!");
+                    }
+                }
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
